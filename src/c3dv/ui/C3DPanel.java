@@ -60,36 +60,36 @@ public class C3DPanel extends JPanel {
     gbc_groupComboBox.gridy = 0;
     btnPanel.add(groupComboBox, gbc_groupComboBox);
 
-    JButton btnNewGroup = new JButton("New Group");
-    GridBagConstraints gbc_btnNewGroup = new GridBagConstraints();
-    gbc_btnNewGroup.anchor = GridBagConstraints.NORTHWEST;
-    gbc_btnNewGroup.insets = new Insets(0, 0, 0, 5);
-    gbc_btnNewGroup.gridx = 1;
-    gbc_btnNewGroup.gridy = 0;
-    btnPanel.add(btnNewGroup, gbc_btnNewGroup);
-
-    JButton btnDeleteGroup = new JButton("Delete Group");
-    GridBagConstraints gbc_btnDeleteGroup = new GridBagConstraints();
-    gbc_btnDeleteGroup.anchor = GridBagConstraints.NORTHWEST;
-    gbc_btnDeleteGroup.insets = new Insets(0, 0, 0, 5);
-    gbc_btnDeleteGroup.gridx = 2;
-    gbc_btnDeleteGroup.gridy = 0;
-    btnPanel.add(btnDeleteGroup, gbc_btnDeleteGroup);
-
-    JButton btnNewParam = new JButton("New Param.");
-    GridBagConstraints gbc_btnNewParam = new GridBagConstraints();
-    gbc_btnNewParam.anchor = GridBagConstraints.NORTHWEST;
-    gbc_btnNewParam.insets = new Insets(0, 0, 0, 5);
-    gbc_btnNewParam.gridx = 3;
-    gbc_btnNewParam.gridy = 0;
-    btnPanel.add(btnNewParam, gbc_btnNewParam);
-
-    JButton btnDeleteParam = new JButton("Delete Param.");
-    GridBagConstraints gbc_btnDeleteParam = new GridBagConstraints();
-    gbc_btnDeleteParam.anchor = GridBagConstraints.NORTHWEST;
-    gbc_btnDeleteParam.gridx = 4;
-    gbc_btnDeleteParam.gridy = 0;
-    btnPanel.add(btnDeleteParam, gbc_btnDeleteParam);
+//    JButton btnNewGroup = new JButton("New Group");
+//    GridBagConstraints gbc_btnNewGroup = new GridBagConstraints();
+//    gbc_btnNewGroup.anchor = GridBagConstraints.NORTHWEST;
+//    gbc_btnNewGroup.insets = new Insets(0, 0, 0, 5);
+//    gbc_btnNewGroup.gridx = 1;
+//    gbc_btnNewGroup.gridy = 0;
+//    btnPanel.add(btnNewGroup, gbc_btnNewGroup);
+//
+//    JButton btnDeleteGroup = new JButton("Delete Group");
+//    GridBagConstraints gbc_btnDeleteGroup = new GridBagConstraints();
+//    gbc_btnDeleteGroup.anchor = GridBagConstraints.NORTHWEST;
+//    gbc_btnDeleteGroup.insets = new Insets(0, 0, 0, 5);
+//    gbc_btnDeleteGroup.gridx = 2;
+//    gbc_btnDeleteGroup.gridy = 0;
+//    btnPanel.add(btnDeleteGroup, gbc_btnDeleteGroup);
+//
+//    JButton btnNewParam = new JButton("New Param.");
+//    GridBagConstraints gbc_btnNewParam = new GridBagConstraints();
+//    gbc_btnNewParam.anchor = GridBagConstraints.NORTHWEST;
+//    gbc_btnNewParam.insets = new Insets(0, 0, 0, 5);
+//    gbc_btnNewParam.gridx = 3;
+//    gbc_btnNewParam.gridy = 0;
+//    btnPanel.add(btnNewParam, gbc_btnNewParam);
+//
+//    JButton btnDeleteParam = new JButton("Delete Param.");
+//    GridBagConstraints gbc_btnDeleteParam = new GridBagConstraints();
+//    gbc_btnDeleteParam.anchor = GridBagConstraints.NORTHWEST;
+//    gbc_btnDeleteParam.gridx = 4;
+//    gbc_btnDeleteParam.gridy = 0;
+//    btnPanel.add(btnDeleteParam, gbc_btnDeleteParam);
   }
 
   private class GroupBoxItemListener implements ItemListener {

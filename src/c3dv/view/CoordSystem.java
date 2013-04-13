@@ -7,8 +7,8 @@ import c3dv.model.C3DFile;
 
 public class CoordSystem {
 
-  public Vec3f worldX      = Vec3f.unitX();
-  public Vec3f worldY      = Vec3f.unitZ();
+  public Vec3f worldX      = Vec3f.axisX();
+  public Vec3f worldY      = Vec3f.axisZ();
   public Vec3f worldZ      = worldX.cross(worldY);
   public float markerScale = 1;
   public float axisLength  = 1;
@@ -26,16 +26,16 @@ public class CoordSystem {
 
   private static Vec3f axis(String name) {
     if (name.equals("+X"))
-      return Vec3f.unitX();
+      return Vec3f.axisX();
     if (name.equals("-X"))
-      return Vec3f.unitX().mul(-1);
+      return Vec3f.axisX().multiply(-1);
     if (name.equals("+Y"))
-      return Vec3f.unitY();
+      return Vec3f.axisY();
     if (name.equals("-Y"))
-      return Vec3f.unitY().mul(-1);
+      return Vec3f.axisY().multiply(-1);
     if (name.equals("+Z"))
-      return Vec3f.unitZ();
-    return Vec3f.unitZ().mul(-1);
+      return Vec3f.axisZ();
+    return Vec3f.axisZ().multiply(-1);
   }
 
   private void setScale(C3DFile file) {

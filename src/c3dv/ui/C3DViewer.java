@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
-import javax.media.opengl.awt.GLJPanel;
+import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -19,12 +21,12 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import jgl.math.Maths;
 import c3dv.model.C3DFile;
 import c3dv.model.C3DReader;
-import c3dv.model.C3DWriter;
-import c3dv.view.CameraControl;
-import c3dv.view.CameraControl.Listener;
 import c3dv.view.Renderer;
+
+import com.jogamp.opengl.util.FPSAnimator;
 
 public class C3DViewer extends JFrame {
   private JFrame         parametersFrame;
@@ -32,15 +34,18 @@ public class C3DViewer extends JFrame {
   private C3DFile        file;
   private Renderer       renderer    = new Renderer();
   private JFileChooser   fileChooser = new JFileChooser();
-  private GLJPanel       canvas;
+  private GLCanvas       canvas;
   private AnimationPanel animationPanel;
   private MarkerPanel    markerPanel;
 
   public C3DViewer(C3DFile file) {
     GLProfile glp = GLProfile.get(GLProfile.GL2);
     GLCapabilities glc = new GLCapabilities(glp);
-    canvas = new GLJPanel(glc);
+    glc.setNumSamples(8);
+    glc.setSampleBuffers(true);
+    canvas = new GLCanvas(glc);
 
+    setTitle("C3D File Viewer");
     contentPane = new JPanel();
     setContentPane(contentPane);
     contentPane.setLayout(new BorderLayout(0, 0));
@@ -60,22 +65,35 @@ public class C3DViewer extends JFrame {
     setSize(800, 600);
     setLocationRelativeTo(null);
     setJMenuBar(createMenuBar());
-    
+
     setVisible(true);
-    canvas.addGLEventListener(renderer);
     
-    CameraControl camControl = new CameraControl(renderer);
-    camControl.addListener(new Listener() {
-      public void viewChanged(CameraControl control) {
-        if (!animationPanel.playing)
-          canvas.repaint();
+    final CameraController camControl = new CameraController();
+    canvas.addKeyListener(camControl);
+    canvas.addMouseWheelListener(camControl);
+    canvas.addGLEventListener(new GLEventListener() {
+      public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
+      }
+      public void init(GLAutoDrawable arg0) {
+      }
+      public void dispose(GLAutoDrawable arg0) {
+      }
+      public void display(GLAutoDrawable arg0) {
+        camControl.update();
       }
     });
-    canvas.addKeyListener(camControl);
-    canvas.addMouseListener(camControl);
-    canvas.addMouseMotionListener(camControl);
-    canvas.addMouseWheelListener(camControl);
-    camControl.start();
+    
+    canvas.addGLEventListener(renderer);
+
+    
+    
+    FPSAnimator animator = new FPSAnimator(canvas, 60);
+    animator.start();
+    
+    camControl.setCamera(renderer.getCamera());
+    camControl.setRadius(3);
+    camControl.setAltitude(Maths.PI/4);
+    camControl.setUpY(false);
   }
 
   void setFile(C3DFile file) {
@@ -92,8 +110,6 @@ public class C3DViewer extends JFrame {
     animationPanel.setFile(file);
     renderer.setFile(file);
     markerPanel.setFile(file);
-
-    canvas.repaint();
   }
 
   private JMenuBar createMenuBar() {
@@ -112,17 +128,17 @@ public class C3DViewer extends JFrame {
       }
     });
 
-    JMenuItem saveMenuItem = new JMenuItem("Save As...");
-    fileMenu.add(saveMenuItem);
-    saveMenuItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        if (file == null)
-          return;
-        if (fileChooser.showSaveDialog(C3DViewer.this) == JFileChooser.APPROVE_OPTION) {
-          new C3DWriter().write(file, fileChooser.getSelectedFile().getAbsolutePath());
-        }
-      }
-    });
+//    JMenuItem saveMenuItem = new JMenuItem("Save As...");
+//    fileMenu.add(saveMenuItem);
+//    saveMenuItem.addActionListener(new ActionListener() {
+//      public void actionPerformed(ActionEvent e) {
+//        if (file == null)
+//          return;
+//        if (fileChooser.showSaveDialog(C3DViewer.this) == JFileChooser.APPROVE_OPTION) {
+//          new C3DWriter().write(file, fileChooser.getSelectedFile().getAbsolutePath());
+//        }
+//      }
+//    });
 
     JMenu viewMenu = new JMenu("View");
     menuBar.add(viewMenu);
@@ -147,13 +163,11 @@ public class C3DViewer extends JFrame {
       }
     });
   }
-  
+
   private class MarkerListListener implements ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
       if (e.getValueIsAdjusting()) {
         renderer.setSelected(markerPanel.list.getSelectedIndex());
-        if (!animationPanel.playing)
-          canvas.repaint();
       }
     }
   }

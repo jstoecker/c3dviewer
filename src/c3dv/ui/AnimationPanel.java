@@ -27,14 +27,14 @@ public class AnimationPanel extends JPanel {
   private JSlider  slider;
   private JLabel   lblFrame;
   private JLabel   lblTime;
-  private GLJPanel canvas;
+  private GLCanvas canvas;
   private C3DFile  file;
   private Renderer renderer;
   private JLabel   lblHertz;
-  public boolean  playing = false;
-  private JButton btnPlay;
+  public boolean   playing = false;
+  private JButton  btnPlay;
 
-  public AnimationPanel(Renderer renderer, GLJPanel canvas) {
+  public AnimationPanel(Renderer renderer, GLCanvas canvas) {
     this.renderer = renderer;
     this.canvas = canvas;
     GridBagLayout gridBagLayout = new GridBagLayout();
@@ -61,7 +61,7 @@ public class AnimationPanel extends JPanel {
 
     btnPlay = new JButton("");
     btnPlay.setIcon(new ImageIcon(AnimationPanel.class.getResource("/resources/play.png")));
-    btnPlay.setPreferredSize(new Dimension(50,35));
+    btnPlay.setPreferredSize(new Dimension(50, 35));
     btnPlay.addActionListener(new PlayListener());
     sliderPanel.add(btnPlay, BorderLayout.WEST);
 

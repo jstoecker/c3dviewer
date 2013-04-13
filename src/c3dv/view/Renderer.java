@@ -6,15 +6,15 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.gl2.GLUgl2;
 
-import jgl.math.vector.Vec3f;
-import jgl.opengl.view.FPCamera;
-import jgl.opengl.view.OrbitCamera;
-import jgl.opengl.view.Viewport;
+import jgl.cameras.Camera;
+import jgl.core.Viewport;
+import jgl.math.vector.Transform;
 import c3dv.model.C3DFile;
 
 public class Renderer implements GLEventListener {
 
-  OrbitCamera camera      = new OrbitCamera(3, 0, 0, new Vec3f(0), false);
+  Camera      camera      = new Camera();
+  Viewport    viewport    = new Viewport(0, 0, 1, 1);
   C3DFile     file;
   CoordSystem coordSystem = new CoordSystem();
   Markers     markers     = new Markers();
@@ -28,7 +28,7 @@ public class Renderer implements GLEventListener {
     grid.update(coordSystem);
   }
 
-  public OrbitCamera getCamera() {
+  public Camera getCamera() {
     return camera;
   }
 
@@ -51,7 +51,10 @@ public class Renderer implements GLEventListener {
   @Override
   public void init(GLAutoDrawable drawable) {
     GL2 gl = drawable.getGL().getGL2();
-    gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
+    gl.glClearColor(1, 1, 1, 0);
+    
+    camera.setView(Transform.lookAt(5, 5, 5, 0, 0, 0, 0, 0, 1));
+    camera.setProjection(Transform.perspective(60, 1, 0.1f, 1000));
   }
 
   @Override
@@ -63,7 +66,9 @@ public class Renderer implements GLEventListener {
 
   @Override
   public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
-    camera.setViewport(new Viewport(x, y, w, h));
+    viewport.width = w;
+    viewport.height = h;
+    camera.setProjection(Transform.perspective(60, viewport.aspect(), 0.1f, 1000));
   }
 
   @Override
@@ -71,12 +76,14 @@ public class Renderer implements GLEventListener {
     GL2 gl = drawable.getGL().getGL2();
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
+    viewport.apply(gl);
     camera.apply(gl);
 
     grid.draw(gl);
     coordSystem.draw(gl);
 
-    if (file == null) return;
+    if (file == null)
+      return;
     markers.draw(gl, selected, file.frames[curFrame]);
   }
 }
