@@ -8,6 +8,7 @@ $ clone clone --recursive git://github.com/jstoecker/c3dviewer.git
 To compile source:
 ------------------
 $ cd c3dviewer
+
 $ ant
 
 To run:
