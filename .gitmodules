@@ -1,0 +1,3 @@
+[submodule "lib/jgl"]
+	path = lib/jgl
+	url = https://github.com/jstoecker/jgl.git
